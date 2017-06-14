@@ -23,7 +23,7 @@ if (date('Y-m-d') > $row['date_generated']) {
 
   echo '<br/>generated<br/>';
   // generate here
-  // require('action/seat-generate.php');
+  require('action/seat-generate.php');
 }
 
 ?>

@@ -148,7 +148,7 @@ if (isset($do_return_date) && $available) {
   $choice_name = 'return_choice';
 
   // exchange
-  $temp = $origin;
+$temp = $origin;
   $origin = $destination;
   $destination = $temp;
 
