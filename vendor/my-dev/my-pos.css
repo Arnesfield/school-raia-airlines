@@ -1,0 +1,36 @@
+/* flex */
+.my-flex,
+.my-center,
+.my-left,
+.my-right {
+  display: flex;
+}
+.my-center {
+  justify-content: center;
+}
+.my-left {
+  justify-content: flex-start;
+}
+.my-right {
+  justify-content: flex-end;
+}
+.my-top {
+  align-self: flex-start;
+}
+.my-bottom {
+  align-self: flex-end;
+}
+.my-middle {
+  align-self: center;
+}
+
+/* position */
+.my-rel {
+  position: relative;
+}
+.my-abs {
+  position: absolute;
+}
+.my-fix {
+  position: fixed;
+}

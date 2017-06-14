@@ -1,0 +1,87 @@
+/* alignment */
+.my-t-c {
+  text-align: center;
+}
+.my-t-j {
+  text-align: justify;
+}
+.my-t-l {
+  text-align: left;
+}
+.my-t-r {
+  text-align: right;
+}
+
+/* font sizes */
+.my-fs {
+  font-size: 1rem;
+}
+.my-fs-1 {
+  font-size: 115%;
+}
+.my-fs-2 {
+  font-size: 125%;
+}
+.my-fs-3 {
+  font-size: 150%;
+}
+.my-fs-4 {
+  font-size: 200%;
+}
+.my-fs-5 {
+  font-size: 250%;
+}
+
+/* letter spacing */
+.my-ls-1 {
+  letter-spacing: 0.15em;
+}
+.my-ls-2 {
+  letter-spacing: 0.25em;
+}
+.my-ls,
+.my-ls-3 {
+  letter-spacing: 0.5em;
+}
+.my-ls-4 {
+  letter-spacing: 1em;
+}
+.my-ls-5 {
+  letter-spacing: 1.5em;
+}
+
+/* word spacing */
+.my-ws-1 {
+  word-spacing: 0.15em;
+}
+.my-ws-2 {
+  word-spacing: 0.25em;
+}
+.my-ws,
+.my-ws-3 {
+  word-spacing: 0.5em;
+}
+.my-ws-4 {
+  word-spacing: 1em;
+}
+.my-ws-5 {
+  word-spacing: 1.5em;
+}
+
+/* line height */
+.my-lh-1 {
+  line-height: 1.25em;
+}
+.my-lh-2 {
+  line-height: 1.75em;
+}
+.my-lh,
+.my-lh-3 {
+  line-height: 2em;
+}
+.my-lh-4 {
+  line-height: 2.5em;
+}
+.my-lh-5 {
+  line-height: 3em;
+}

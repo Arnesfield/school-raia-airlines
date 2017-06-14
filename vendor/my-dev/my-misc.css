@@ -1,0 +1,37 @@
+/* dim  */
+.my-dim-1 {
+  background-color: rgba(0,0,0,0.1);
+}
+.my-dim,
+.my-dim-2 {
+  background-color: rgba(0,0,0,0.2);
+}
+.my-dim-3 {
+  background-color: rgba(0,0,0,0.3);
+}
+.my-dim-4 {
+  background-color: rgba(0,0,0,0.4);
+}
+.my-dim-5 {
+  background-color: rgba(0,0,0,0.5);
+}
+.my-dim-6 {
+  background-color: rgba(0,0,0,0.6);
+}
+.my-dim-7 {
+  background-color: rgba(0,0,0,0.7);
+}
+.my-dim-8 {
+  background-color: rgba(0,0,0,0.8);
+}
+.my-dim-9 {
+  background-color: rgba(0,0,0,0.9);
+}
+
+/* parallax */
+.my-parallax {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
