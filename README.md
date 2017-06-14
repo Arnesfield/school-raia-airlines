@@ -21,7 +21,7 @@ Database password:
   
 
 ### Current Version Build
-v0.3-alpha
+**v0.3-alpha**
 06-13-17
 
 #### Highlights
@@ -30,7 +30,7 @@ v0.3-alpha
 
 
 ### Older Version Builds
-v0.2-alpha
+**v0.2-alpha**
 06-13-17
 
 #### Highlights
@@ -38,10 +38,10 @@ v0.2-alpha
 - Minor fixes
 
 
-v0.1-alpha
+**v0.1-alpha**
 06-12-17
 
-Highlights
+#### Highlights
 - Email verification
 - Sign Up
 - Log in
