@@ -148,7 +148,7 @@ if (isset($do_return_date) && $available) {
   $choice_name = 'return_choice';
 
   // exchange
-$temp = $origin;
+  $temp = $origin;
   $origin = $destination;
   $destination = $temp;
 
@@ -186,8 +186,8 @@ if ( isset($_POST['select_flight']) ) {
 
     // add to session
     $_SESSION['return_choice'] = array(
-      'return_id' => $d_id,
-      'return_flight_type' => $d_f_type
+      'return_id' => $r_id,
+      'return_flight_type' => $r_f_type
     );
   }
 

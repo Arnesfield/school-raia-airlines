@@ -34,13 +34,26 @@ $total_passengers_set = $no_adults*1 + $no_children*1 + $no_infant*1;
 // query seats of given departure
 $query = "
   SELECT id FROM seats
-  WHERE status != '0'
+  WHERE status = '1'
+  LIMIT 3
 ";
 
 $record = $conn->query($query);
 
+
+// generate seats
+$what_seat = 'departure_seats';
+require('action/set-generated-seats.php');
+
+if (isset($_SESSION['return_choice'])) {
+  $what_seat = 'return_seats';
+  require('action/set-generated-seats.php');
+}
+
 // generate seats based on record
 // use table instead
+
+// generate seats instead
 ?>
 
 
@@ -49,9 +62,35 @@ $record = $conn->query($query);
 <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
 
   <div>
+  
+    <h4>Generated departure seats</h4>
+
+    <!-- display generated seats -->
+    <?php foreach($_SESSION['generated_seats']['departure_seats'] as $seat) { ?>
+      <p><?=$seat?></p>
+    <?php } ?>
+
+    <?php if (isset($_SESSION['return_choice'])) { ?>
+    
+      <h4>Generated return seats</h4>
+      
+      <!-- display generated seats -->
+      <?php foreach($_SESSION['generated_seats']['return_seats'] as $seat) { ?>
+        <p><?=$seat?></p>
+      <?php } ?>
+      
+    <?php } ?>
+
+  </div>
+
+  <div>
     <a href="flights-select.php">&laquo; Back</a>
     <button type="submit" name="select_seats">Next</button>
   </div>
+
+</form>
+
+<!-- show table -->
 
 <table>
 
@@ -80,19 +119,19 @@ $record = $conn->query($query);
 
 </table>
 
-</form>
-
 <?php
 
 if ( isset($_POST['select_seats']) ) {
 
   // if number of selected seats is greater than number of set passengers
+  /*
   if (count($_POST['seats']) != $total_passengers_set) {
     // display error
     $msg = 'There should be only ' . $total_passengers_set . ' number of seats selected.';
     include_once('markup/msg.php');
     exit();
   }
+  */
 
   // save selected seats here
   echo count($_POST['seats']);
@@ -104,7 +143,7 @@ if ( isset($_POST['select_seats']) ) {
   }
 
   // redirect to next page
-  // header('location: passenger-info.php');
+  header('location: passenger-info.php');
 }
 
 
