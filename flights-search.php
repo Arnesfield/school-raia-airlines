@@ -21,6 +21,9 @@ if (isset($_SESSION['search_flights']) && !$_SESSION['is_admin']) {
 
   if (isset($_SESSION['select_flight']))
     unset($_SESSION['select_flight']);
+
+  if (isset($_SESSION['passenger_info']))
+    unset($_SESSION['passenger_info']);
 }
 
 ?>
@@ -57,7 +60,7 @@ if (isset($_SESSION['search_flights'])) {
     <label for="origin">Origin</label>
     <select id="origin" name="origin" required>
       
-      <option value=""></option>
+      <option value="">Select Origin</option>
       <?php foreach ($record as $row) { ?>
       <option value="<?=$row['id']?>"
         <?php
@@ -75,7 +78,7 @@ if (isset($_SESSION['search_flights'])) {
     <label for="destination">Destination</label>
     <select id="destination" name="destination" required>
 
-      <option value=""></option>
+      <option value="">Select Destination</option>
       <?php foreach ($record as $row) { ?>
       <option value="<?=$row['id']?>"
         <?php
@@ -201,6 +204,9 @@ if ( isset($_POST['search_flights']) ) {
     // save to session
     $_SESSION['search_flights'][$key] = $value;
   }
+
+  $_SESSION['search_flights']['total_passengers_set'] =
+    $_POST['no_adults']*1 + $_POST['no_children']*1 + $_POST['no_infant']*1;
 
   // redirect here
   header('location: flights-select.php');

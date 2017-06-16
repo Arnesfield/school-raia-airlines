@@ -14,10 +14,11 @@ $query = "
 
 $record = $conn->query($query);
 
+$_SESSION['generated_seats'][$what_seat] = array();
+
 foreach ($record as $row) {    
   // add generated seat to array
-  $_SESSION['generated_seats'][$what_seat] = array();
-  array_push($_SESSION['generated_seats'][$what_seat], $row['id']);
+  $_SESSION['generated_seats'][$what_seat][] = $row['id'];
 }
 
 

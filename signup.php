@@ -90,7 +90,7 @@
   </div>
   
   <div>
-    <label for="birth_month">Date of Birth</label>
+    <label for="birth_month">Birthdate</label>
     <select id="birth_month" name="birth_month" required>
       <option value="">Month</option>
       <?php

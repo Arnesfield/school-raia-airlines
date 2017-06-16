@@ -25,22 +25,12 @@ foreach ($_SESSION['search_flights'] as $key => $value) {
 }
 
 // get total persons
-$total_passengers_set = $no_adults*1 + $no_children*1 + $no_infant*1;
+$total_passengers_set = $_SESSION['search_flights']['total_passengers_set'];
 ?>
 
-<?php echo '<pre>'; print_r($_SESSION); echo '</pre>'; ?> 
+<?php echo '<pre>'; print_r($_SESSION); echo '</pre>'; ?>
 
 <?php
-// query seats of given departure
-$query = "
-  SELECT id FROM seats
-  WHERE status = '1'
-  LIMIT 3
-";
-
-$record = $conn->query($query);
-
-
 // generate seats
 $what_seat = 'departure_seats';
 require('action/set-generated-seats.php');

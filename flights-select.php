@@ -42,7 +42,7 @@ $query = "
 // only generate seats if 
 
 // get total persons
-$total_passengers_set = $no_adults*1 + $no_children*1 + $no_infant*1;
+$total_passengers_set = $_SESSION['search_flights']['total_passengers_set'];
 
 // all available flights
 $execute = $conn->query($query);
