@@ -1,17 +1,9 @@
 <?php
 // fetch places based on ids
-$query = "
-  SELECT place FROM airports
-  WHERE id = $origin
-";
-
+$query = "SELECT place FROM airports WHERE id = $fid_1";
 $origin_place = $conn->query($query)->fetch_assoc()['place'];
 
-$query = "
-  SELECT place FROM airports
-  WHERE id = $destination
-";
-
+$query = "SELECT place FROM airports WHERE id = $fid_2";
 $destination_place = $conn->query($query)->fetch_assoc()['place'];
 ?>
 
@@ -45,10 +37,10 @@ if (!$available) {
   ?>
   <?php
     // if id
-    if ($no_of_available_seats[$index]['flight_id'] == $row['id']) {
+    if ($available_seats[$index]['flight_id'] == $row['id']) {
 
       // skip current info if full
-      if ($no_of_available_seats[$index]['total_available_seats']*1 < $total_passengers_set)
+      if ($available_seats[$index]['total_available_seats']*1 < $total_passengers)
         continue;
     }
 
@@ -146,8 +138,8 @@ if ($added_rows == 0 && $departure_bool) {
 </script>
 
 <?php
-    $departure_bool = false;
-  }
+  $departure_bool = false;
+}
 ?>
 
 <?php } ?>

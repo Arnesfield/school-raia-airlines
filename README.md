@@ -1,27 +1,39 @@
-# RAIA Airlines v0.3-alpha
+# RAIA Airlines v0.4-alpha
 
-Database name: db_airlines
-Database username: root
-Database password: 
+## Database Information
+- Database name: db_airlines
+- Database username: root
+- Database password: 
 
 ## Directories
-  CSS files directory: lib/css/
-  JS files directory: lib/js/
-  SQL files directory: sql/
-  PHP action files directory: action/
-  User Interface files directory: markup/
-  Unowned resource files directory: vendor/
-  Uploaded files directory: upload/
+- CSS files directory: lib/css/
+- JS files directory: lib/js/
+- SQL files directory: sql/
+- PHP action files directory: action/
+- User Interface files directory: markup/
+- Unowned resource files directory: vendor/
+- Uploaded files directory: upload/
 
-## NOTE:
-  - Create database named 'db_airlines'
-  - Import db_airlines-v0.3-alpha.sql from sql/ directory
-  - Modify action/send-verification.php variable $host_name to your directory
-  - Modify action/send-verification.php email and password
-  
+## NOTE
+- Create database named 'db_airlines'
+- Import db_airlines-v0.4-alpha.sql from sql/ directory
+- Modify action/send-verification.php variable $host_name to your directory
+- Modify action/send-verification.php email and password
+
 
 ### Current Version Build
-**v0.3-alpha**
+**v0.4-alpha**  
+06-17-17
+
+#### Highlights
+- Updated seat logic
+- Generated seats (might change)
+- Passenger information (incomplete)
+- Reservation summary (incomplete)
+
+
+### Older Version Builds
+**v0.3-alpha**  
 06-13-17
 
 #### Highlights
@@ -29,8 +41,7 @@ Database password:
 - Minor fixes
 
 
-### Older Version Builds
-**v0.2-alpha**
+**v0.2-alpha**  
 06-13-17
 
 #### Highlights
@@ -38,7 +49,7 @@ Database password:
 - Minor fixes
 
 
-**v0.1-alpha**
+**v0.1-alpha**  
 06-12-17
 
 #### Highlights

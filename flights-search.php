@@ -6,24 +6,13 @@ require_once('action/header.php');
 require_once('markup/user-nav.html');
 
 session_start();
+require_once('action/redirect-user.php');
 require_once('action/db-connection.php');
 
 // if search flights is set here and is user
-if (isset($_SESSION['search_flights']) && !$_SESSION['is_admin']) {
+if (isset($_SESSION['reservation']) && !$_SESSION['is_admin']) {
   // unset search flights
-  unset($_SESSION['search_flights']);
-
-  if (isset($_SESSION['departure_choice']))
-    unset($_SESSION['departure_choice']);
-
-  if (isset($_SESSION['return_choice']))
-    unset($_SESSION['return_choice']);
-
-  if (isset($_SESSION['select_flight']))
-    unset($_SESSION['select_flight']);
-
-  if (isset($_SESSION['passenger_info']))
-    unset($_SESSION['passenger_info']);
+  unset($_SESSION['reservation']);
 }
 
 ?>
@@ -199,13 +188,21 @@ if ( isset($_POST['search_flights']) ) {
     exit();
   }
 
+  $total = $_POST['no_adults']*1 + $_POST['no_children']*1 + $_POST['no_infant']*1;
+
+  if ($total <= 0) {
+    $msg = 'There must be at least 1 passenger.';
+    include_once('markup/msg.php');
+    exit();
+  }
+
   // save entries to array in session
   foreach ($_POST as $key => $value) {
     // save to session
-    $_SESSION['search_flights'][$key] = $value;
+    $_SESSION['reservation']['search_flights'][$key] = $value;
   }
 
-  $_SESSION['search_flights']['total_passengers_set'] =
+  $_SESSION['reservation']['search_flights']['total_passengers'] =
     $_POST['no_adults']*1 + $_POST['no_children']*1 + $_POST['no_infant']*1;
 
   // redirect here

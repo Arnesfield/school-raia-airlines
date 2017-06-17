@@ -6,103 +6,44 @@ require_once('action/header.php');
 require_once('markup/user-nav.html');
 
 session_start();
+require_once('action/redirect-user.php');
 require_once('action/db-connection.php');
 ?>
 
 <?php
 // validate if submit exists
-if (!isset($_SESSION['search_flights'])) {
+if (!isset($_SESSION['reservation']['search_flights'])) {
   header('location: flights-search.php');
   exit();
 }
 ?>
 
+<?php echo '<pre>'; print_r($_SESSION); echo '</pre>'; ?>
+
 <?php
-foreach ($_SESSION['search_flights'] as $key => $value) {
+foreach ($_SESSION['reservation']['search_flights'] as $key => $value) {
   // echo $key . ' ' . $value . '<br/>';
   $$key = $value;
 }
 
-// query flights table and look for available flights on that day
-$query = "
-  SELECT * FROM flights
-  WHERE
-    status = '1' AND
-    origin_id = $origin AND
-    destination_id = $destination
-  ORDER BY
-    departure_time ASC
-";
+// set variables inside flights-query.php
+$available = true;
 
-// query this
-// check if id has available seats for total passenger set
-// same number of rows
-// fetch assoc at the same time
+$fid_1 = $origin;
+$fid_2 = $destination;
+$record_name = 'departure_record';
 
-// only generate seats if 
-
-// get total persons
-$total_passengers_set = $_SESSION['search_flights']['total_passengers_set'];
-
-// all available flights
-$execute = $conn->query($query);
-
-// use this array to store data
-$no_of_available_seats = array();
-
-foreach ($execute as $row) {
-
-  // push number of seats to array
-  $curr_flight_id = $row['id'];
-  require('action/get-total-available-seats.php');
-
-  // echo $total_passengers_set . '<br/>';
-
-  // echo $no_of_available_seats[0]['flight_id'] . ' here<br/>';
-}
-
-/*
-$query = "
-  SELECT
-    f.id AS 'id',
-    f.flight_code AS 'flight_code',
-    f.departure_time AS 'departure_time',
-    f.arrival_time AS 'arrival_time',
-    f.price AS 'price',
-    f.price_w_baggage AS 'price_w_baggage',
-    f.price_w_all AS 'price_w_all',
-    s.id AS 'seat_id'
-  FROM flights f, seats s
-  WHERE
-    f.status = '1' AND
-    f.origin_id = $origin AND
-    f.destination_id = $destination AND
-    s.flight_id = f.id
-  ORDER BY
-    f.departure_time ASC
-";
-*/
-
-$departure_record = $conn->query($query);
-
-$available = $departure_record->num_rows > 0;
+require('action/flights-query.php');
 
 // if has return
 if (isset($do_return_date)) {
-  $query = "
-    SELECT * FROM flights
-    WHERE
-      status = '1' AND
-      origin_id = $destination AND
-      destination_id = $origin
-    ORDER BY
-      departure_time ASC
-  ";
 
-  $return_record = $conn->query($query);
+  // set variables for flights-query.php
+  $fid_1 = $destination;
+  $fid_2 = $origin;
+  $record_name = 'return_record';
 
-  // add condition to available
-  $available = $return_record->num_rows > 0;
+  require('action/flights-query.php');
 }
 
 ?>
@@ -114,9 +55,9 @@ if (isset($do_return_date)) {
 <?php
 
 // set value here
-if (isset($_SESSION['departure_choice'])) {
-  $selected_d_id = $_SESSION['departure_choice']['departure_id'];
-  $selected_f_type = $_SESSION['departure_choice']['departure_flight_type'];
+if (isset($_SESSION['reservation']['departure_choice'])) {
+  $selected_d_id = $_SESSION['reservation']['departure_choice']['departure_id'];
+  $selected_f_type = $_SESSION['reservation']['departure_choice']['departure_flight_type'];
 }
 else {
   $selected_d_id = '';
@@ -129,13 +70,16 @@ $table_title = 'Departure Flight';
 $choice_name = 'departure_choice';
 $departure_bool = true;
 
+$fid_1 = $origin;
+$fid_2 = $destination;
+
 require('markup/user-flights-table.php');
 
 if (isset($do_return_date) && $available) {
   // set value here
-  if (isset($_SESSION['return_choice'])) {
-    $selected_d_id = $_SESSION['return_choice']['return_id'];
-    $selected_f_type = $_SESSION['return_choice']['return_flight_type'];
+  if (isset($_SESSION['reservation']['return_choice'])) {
+    $selected_d_id = $_SESSION['reservation']['return_choice']['return_id'];
+    $selected_f_type = $_SESSION['reservation']['return_choice']['return_flight_type'];
   }
   else {
     $selected_d_id = '';
@@ -148,9 +92,8 @@ if (isset($do_return_date) && $available) {
   $choice_name = 'return_choice';
 
   // exchange
-  $temp = $origin;
-  $origin = $destination;
-  $destination = $temp;
+  $fid_1 = $destination;
+  $fid_2 = $origin;
 
   require('markup/user-flights-table.php');
 }
@@ -171,13 +114,13 @@ if ( isset($_POST['select_flight']) ) {
     // echo 'Departure Info: ' . $d_id . ' ' . $d_f_type . '<br/>';
 
     // add to session
-    $_SESSION['departure_choice'] = array(
+    $_SESSION['reservation']['departure_choice'] = array(
       'departure_id' => $d_id,
       'departure_flight_type' => $d_f_type
     );
 
     // add post submit to session
-    $_SESSION['select_flight'] = $_POST['select_flight'];
+    $_SESSION['reservation']['select_flight'] = $_POST['select_flight'];
   }
 
   if (isset($do_return_date)) {
@@ -185,7 +128,7 @@ if ( isset($_POST['select_flight']) ) {
     // echo 'Return Info: ' . $r_id . ' ' . $r_f_type . '<br/>';
 
     // add to session
-    $_SESSION['return_choice'] = array(
+    $_SESSION['reservation']['return_choice'] = array(
       'return_id' => $r_id,
       'return_flight_type' => $r_f_type
     );

@@ -11,7 +11,7 @@ require_once('action/db-connection.php');
 
 <?php
 // validate if submit exists
-if (!isset($_SESSION['select_flight'])) {
+if (!isset($_SESSION['reservation']['select_flight'])) {
   header('location: flights-select.php');
   exit();
 }
@@ -19,13 +19,13 @@ if (!isset($_SESSION['select_flight'])) {
 
 <?php
 // include variables from search flights
-foreach ($_SESSION['search_flights'] as $key => $value) {
+foreach ($_SESSION['reservation']['search_flights'] as $key => $value) {
   // echo $key . ' ' . $value . '<br/>';
   $$key = $value;
 }
 
 // get total persons
-$total_passengers_set = $_SESSION['search_flights']['total_passengers_set'];
+$total_passengers = $_SESSION['reservation']['search_flights']['total_passengers'];
 ?>
 
 <?php echo '<pre>'; print_r($_SESSION); echo '</pre>'; ?>
@@ -35,7 +35,7 @@ $total_passengers_set = $_SESSION['search_flights']['total_passengers_set'];
 $what_seat = 'departure_seats';
 require('action/set-generated-seats.php');
 
-if (isset($_SESSION['return_choice'])) {
+if (isset($_SESSION['reservation']['return_choice'])) {
   $what_seat = 'return_seats';
   require('action/set-generated-seats.php');
 }
@@ -56,16 +56,16 @@ if (isset($_SESSION['return_choice'])) {
     <h4>Generated departure seats</h4>
 
     <!-- display generated seats -->
-    <?php foreach($_SESSION['generated_seats']['departure_seats'] as $seat) { ?>
+    <?php foreach($_SESSION['reservation']['departure_seats'] as $seat) { ?>
       <p><?=$seat?></p>
     <?php } ?>
 
-    <?php if (isset($_SESSION['return_choice'])) { ?>
+    <?php if (isset($_SESSION['reservation']['return_choice'])) { ?>
     
       <h4>Generated return seats</h4>
       
       <!-- display generated seats -->
-      <?php foreach($_SESSION['generated_seats']['return_seats'] as $seat) { ?>
+      <?php foreach($_SESSION['reservation']['return_seats'] as $seat) { ?>
         <p><?=$seat?></p>
       <?php } ?>
       
@@ -115,9 +115,9 @@ if ( isset($_POST['select_seats']) ) {
 
   // if number of selected seats is greater than number of set passengers
   /*
-  if (count($_POST['seats']) != $total_passengers_set) {
+  if (count($_POST['seats']) != $total_passengers) {
     // display error
-    $msg = 'There should be only ' . $total_passengers_set . ' number of seats selected.';
+    $msg = 'There should be only ' . $total_passengers . ' number of seats selected.';
     include_once('markup/msg.php');
     exit();
   }
@@ -129,7 +129,7 @@ if ( isset($_POST['select_seats']) ) {
   // save entries to array in session
   foreach ($_POST as $key => $value) {
     // save to session
-    $_SESSION[$key] = $value;
+    $_SESSION['reservation'][$key] = $value;
   }
 
   // redirect to next page

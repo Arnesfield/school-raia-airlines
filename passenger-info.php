@@ -11,7 +11,7 @@ require_once('action/db-connection.php');
 
 <?php
 // validate if submit exists
-if (!isset($_SESSION['select_seats'])) {
+if (!isset($_SESSION['reservation']['select_seats'])) {
   header('location: seats-select.php');
   exit();
 }
@@ -19,7 +19,7 @@ if (!isset($_SESSION['select_seats'])) {
 
 <?php
 // get total persons
-$total_passengers_set = $_SESSION['search_flights']['total_passengers_set'];
+$total_passengers = $_SESSION['reservation']['search_flights']['total_passengers'];
 
 // repost to form
 if (isset($_POST['passenger_info'])) {
@@ -29,7 +29,7 @@ if (isset($_POST['passenger_info'])) {
     
     // set variables
     for ($i = 0; $i < count($values); $i++) {
-      $temp = ($key == ('seat_id-' . $i)) ? $key : $key . '-' . $i;
+      $temp = ($key == ("seat_id-$i")) ? $key : "$key-$i";
       ${$temp} = $values[$i];
     }
     
@@ -43,13 +43,18 @@ if (isset($_POST['passenger_info'])) {
 }
 
 else {
-  for ($i = 0; $i < $total_passengers_set; $i++) {
-    ${'seat_id-' . $i} = '';
-    ${'fname-' . $i} = '';
-    ${'lname-' . $i} = '';
-    ${'birth_day-' . $i} = '';
-    ${'birth_month-' . $i} = '';
-    ${'birth_year-' . $i} = '';
+  $total_forms = $total_passengers;
+
+  if (isset($_SESSION['reservation']['return_choice']))
+    $total_forms *= 2;
+
+  for ($i = 0; $i < $total_forms; $i++) {
+    ${"seat_id-$i"} = '';
+    ${"fname-$i"} = '';
+    ${"lname-$i"} = '';
+    ${"birth_day-$i"} = '';
+    ${"birth_month-$i"} = '';
+    ${"birth_year-$i"} = '';
   }
 }
 
@@ -57,25 +62,32 @@ else {
 
 <?php echo '<pre>'; print_r($_SESSION); echo '</pre>'; ?>
 
-<?php
-
-?>
-
 <h2>Enter passenger info</h2>
 
 <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
 
+  <h4>Departure Seats</h4>
 
-<h4>Departure Seats</h4>
+  <?php
+    $curr_passenger_index = 0;
+    foreach ($_SESSION['reservation']['departure_seats'] as $seat_id) {
+      require('markup/form-passenger-info.php');
+      $curr_passenger_index++;
+    }
+  ?>
 
-<?php
-$curr_passenger_index = 0;
-foreach ($_SESSION['generated_seats']['departure_seats'] as $seat_id) {
-  require('markup/form-passenger-info.php');
-  $curr_passenger_index++;
-}  
-?>
+  <?php if (isset($_SESSION['reservation']['return_choice'])) { ?>
 
+  <h4>Return Seats</h4>
+
+  <?php
+    foreach ($_SESSION['reservation']['return_seats'] as $seat_id) {
+      require('markup/form-passenger-info.php');
+      $curr_passenger_index++;
+    }
+  ?>
+
+  <?php } ?>
 
   <div>
     <button type"submit" name="passenger_info">Submit</button>
@@ -86,26 +98,23 @@ foreach ($_SESSION['generated_seats']['departure_seats'] as $seat_id) {
 <?php
 // if post
 if (isset($_POST['passenger_info'])) {
-  echo 'posted';
-
   echo '<pre>';
   print_r($_POST);
   echo '</pre>';
 
-  return;
-  echo 'posted 2';
   // save to session if valid
-  $_SESSION['passenger_info'][] = array(
-    'fname' => $fname,
-    'lname' => $lname,
-    'birth_day' => $birth_day,
-    'birth_month' => $birth_month,
-    'birth_month' => $birth_month,
-    'birth_day' => $birth_day,
-  );
+  for ($i = 0; $i < $total_passengers; $i++) {
+    $_SESSION['reservation']['passenger_info'][$i] = array(
+      'fname' => ${"fname-$i"},
+      'lname' => ${"lname-$i"},
+      'birth_day' => ${"birth_day-$i"},
+      'birth_month' => ${"birth_month-$i"},
+      'birth_year' => ${"birth_year-$i"}
+    );
+  }
 
   // redirect to summary
-  // header('location: reservation summary');
+  header('location: res-summary.php');
 }
 ?>
 

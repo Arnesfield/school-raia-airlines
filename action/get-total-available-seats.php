@@ -1,30 +1,23 @@
 <?php
 
 // total available flights
+
+// can be changed to
 $sql = "
-  SELECT
-    flight_id,
-    COUNT(*) AS 'total_available_seats'
-  FROM seats
-  WHERE
-    status = '1' AND
-    flight_id = $curr_flight_id
-  GROUP BY flight_id
+  SELECT total_seats FROM flights
+  WHERE id = $id
 ";
 
 // get total available flights of flight id
-$row = $conn->query($sql)->fetch_assoc();
-$total_available_seats = $row['total_available_seats'];
+$total_available_seats = $conn->query($sql)->fetch_assoc()['total_seats'];
+
+// also query transactions table
+// 
 
 // save it to array
-array_push($no_of_available_seats, array(
-  'flight_id' => $curr_flight_id,
+array_push($available_seats, array(
+  'flight_id' => $id,
   'total_available_seats' => $total_available_seats
 ));
-
-// echo 'id ' . $curr_flight_id . ' available ' . $total_available_seats . '<br/>';
-
-// foreach ($record as $row) {}
-
 
 ?>
