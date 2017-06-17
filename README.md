@@ -30,6 +30,7 @@
 - Generated seats (might change)
 - Passenger information (incomplete)
 - Reservation summary (incomplete)
+- Added user redirect
 
 
 ### Older Version Builds
