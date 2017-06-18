@@ -1,12 +1,11 @@
 <?php
+session_start();
 $head_title = "RAIA Airlines";
 require_once('markup/top.php');
-require_once('action/header.php');
+// require_once('action/header.php');
 ?>
 
 <?php
-session_start();
-
 // do show login form
 $show_login = true;
 

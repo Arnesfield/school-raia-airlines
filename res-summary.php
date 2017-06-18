@@ -1,11 +1,11 @@
 <?php
+session_start();
 $head_title = 'Reservation Summary - RAIA Airlines';
 require_once('markup/top.php');
 require_once('action/session-expire.php');
 require_once('action/header.php');
 require_once('markup/user-nav.html');
 
-session_start();
 require_once('action/db-connection.php');
 ?>
 
