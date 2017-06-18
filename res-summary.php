@@ -22,6 +22,11 @@ foreach ($_SESSION['reservation']['search_flights'] as $key => $value) {
   $$key = $value;
 }
 
+$departure_seats = $_SESSION['reservation']['departure_seats'];
+if (isset($_SESSION['reservation']['return_choice'])) {
+  $return_seats = $_SESSION['reservation']['return_seats'];
+}
+
 $total_passengers = $_SESSION['reservation']['search_flights']['total_passengers'];
 
 // 
@@ -33,12 +38,78 @@ $destination_id = $res['search_flights']['destination'];
 
 
 // query places
-$query = "SELECT place FROM airports WHERE id = $origin";
-$origin_name = $conn->query($query)->fetch_assoc()['place'];
+$query = "SELECT name, place FROM airports WHERE id = $origin";
+$record = $conn->query($query)->fetch_assoc();
+$origin_a_name = $record['name'];
+$origin_name = $record['place'];
 
-$query = "SELECT place FROM airports WHERE id = $destination";
-$destination_name = $conn->query($query)->fetch_assoc()['place'];
+$query = "
+  SELECT
+    f.id AS 'flight_id',
+    f.flight_code AS 'flight_code',
+    f.departure_time AS 'departure_time',
+    f.arrival_time AS 'arrival_time',
+    f.price AS 'price',
+    f.price_w_baggage AS 'price_w_baggage',
+    f.price_w_all AS 'price_w_all'
+  FROM seats s, flights f
+  WHERE
+    s.id = {$departure_seats[0]} AND
+    s.flight_id = f.id
+";
+echo $query;
+$record = $conn->query($query)->fetch_assoc();
+$dept_fid = $record['flight_id'];
+$dept_fcode = $record['flight_code'];
+$dept_time = $record['departure_time'];
+$dept_arrival = $record['arrival_time'];
+$dept_price = $record['price'];
+$dept_type = $_SESSION['reservation']['departure_choice']['departure_flight_type'];
 
+if ($dept_type == 0)
+  $dept_price = $record['price'];
+else if ($dept_type == 1)
+  $dept_price = $record['price_w_baggage'];
+else if ($dept_type == 2)
+  $dept_price = $record['price_w_all'];
+// $code_orig = $conn->query($query)->fetch_assoc()['flight_code'];
+
+$query = "SELECT name, place FROM airports WHERE id = $destination";
+$record = $conn->query($query)->fetch_assoc();
+$destination_a_name = $record['name'];
+$destination_name = $record['place'];
+// $code_dest = $conn->query($query)->fetch_assoc()['flight_code'];
+
+if (isset($_SESSION['reservation']['return_choice'])) {
+  $query = "
+    SELECT
+      f.id AS 'flight_id',
+      f.flight_code AS 'flight_code',
+      f.departure_time AS 'departure_time',
+      f.arrival_time AS 'arrival_time',
+      f.price AS 'price',
+      f.price_w_baggage AS 'price_w_baggage',
+      f.price_w_all AS 'price_w_all'
+    FROM seats s, flights f
+    WHERE
+      s.id = {$return_seats[0]} AND
+      s.flight_id = f.id
+  ";
+  $record = $conn->query($query)->fetch_assoc();
+  $return_fid = $record['flight_id'];
+  $return_fcode = $record['flight_code'];
+  $return_time = $record['departure_time'];
+  $return_arrival = $record['arrival_time'];
+  $return_price = $record['price'];
+  $return_type = $_SESSION['reservation']['return_choice']['return_flight_type'];
+
+  if ($return_type == 0)
+    $return_price = $record['price'];
+  else if ($return_type == 1)
+    $return_price = $record['price_w_baggage'];
+  else if ($return_type == 2)
+    $return_price = $record['price_w_all'];
+}
 
 ?>
 
@@ -49,39 +120,153 @@ $destination_name = $conn->query($query)->fetch_assoc()['place'];
 <!-- flight info -->
 <div>
   
-  <h3>
-    Departure Information
-  </h3>
-
-  <h4>
-    Origin: <?=$origin_name?>
-  </h4>
-
-  <h4>
-    Destination: <?=$destination_name?>
-  </h4>
-
-  <h4>
-    Departure date: <?=$departure_date?>
-  </h4>
-
   <!-- display table -->
   <div>
 
     <div>
       <h4>
-        Passenger Information
+        Passenger Details
       </h4>
     </div>
 
-    <table>
-    <?php for ($i = 0; $i < $total_passengers; $i++) {
-      require('markup/user-res-summary-table.php');
-    }
-    ?>
-    </table>
+    <?php require('markup/user-res-psgr-details.php'); ?>
 
   </div>
+
+  <div>
+    <h3>Flight Details</h3>
+
+    <div>
+
+      <table>
+
+        <tr>
+          <td colspan=4>
+            <h3>Departure Information</h3>
+          </td>
+        </tr>
+
+        <tr>
+          <th>Flight</th>
+          <th>Departure</th>
+          <th>Arrival</th>
+          <th>Price</th>
+        </tr>
+
+        <tr>
+
+          <td>
+            <div>
+              <p>Flight Code: <?=$dept_fcode?></p>
+              <p><?=$origin_name?> to <?=$destination_name?></p>
+            </div>
+          </td>
+
+          <td>
+            <div>
+              <p>Departure date: <?=date('F d, Y', strtotime($departure_date))?></p>
+              <p>Departure time: <?=date('H:i', strtotime($dept_time))?></p>
+              <p><?=$origin_a_name?></p>
+            </div>
+          </td>
+
+          <td>
+            <div>
+              <p>Arrival date: <?=date('F d, Y', strtotime($departure_date))?></p>
+              <p>Arrival time: <?=date('H:i', strtotime($dept_arrival))?></p>
+              <p><?=$destination_a_name?></p>
+            </div>
+          </td>
+
+          <td>
+            <div>
+              <p>P<?=$dept_price?></p> <br/>
+            </div>
+          </td>
+
+        </tr>
+
+        <!-- return -->
+        <?php if (isset($_SESSION['reservation']['return_choice'])) { ?>
+
+        <tr>
+          <td colspan=4>
+            <h3>Return Information</h3>
+          </td>
+        </tr>
+
+        <tr>
+          <th>Flight</th>
+          <th>Departure</th>
+          <th>Arrival</th>
+          <th>Price</th>
+        </tr>
+
+        <tr>
+
+          <td>
+            <div>
+              <p>Flight Code: <?=$return_fcode?></p>
+              <p><?=$destination_name?> to <?=$origin_name?></p>
+            </div>
+          </td>
+
+          <td>
+            <div>
+              <p>Departure date: <?=date('F d, Y', strtotime($return_date))?></p>
+              <p>Departure time: <?=date('H:i', strtotime($return_time))?></p>
+              <p><?=$destination_a_name?></p>
+            </div>
+          </td>
+
+          <td>
+            <div>
+              <p>Arrival date: <?=date('F d, Y', strtotime($return_date))?></p>
+              <p>Arrival time: <?=date('H:i', strtotime($return_arrival))?></p>
+              <p><?=$origin_a_name?></p>
+            </div>
+          </td>
+
+          <td>
+            <div>
+              <p>P<?=$return_price?></p> <br/>
+            </div>
+          </td>
+
+        </tr>
+
+        <?php } ?>
+
+        <tr>
+          <td colspan=2>&nbsp;</td>
+          <td>
+            <strong>Total</strong>
+          </td>
+
+          <td>
+            <?php
+              $total = $dept_price;
+
+              if (isset($_SESSION['reservation']['return_choice'])) {
+                $total += $return_price;
+              }
+            ?>
+
+            <strong>P<?=$total?></strong>
+          </td>
+
+        </tr>
+
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+<div>
+
+
 
 </div>
 

@@ -2,7 +2,15 @@
 
   <input type="hidden" name="seat_id[]" value="<?=$seat_id?>" />
 
-  <h5>For seat number <?=$seat_id?></h5>
+  <h5>
+    For seat number <?=$seat_id?> <br/>
+    <?php
+    if (isset($_SESSION['reservation']['return_choice'])) {
+      $return_seat_no = $_SESSION['reservation']['return_seats'][$curr_passenger_index];
+    ?>
+    For return seat number <?=$return_seat_no?>
+    <?php } ?>
+  </h5>
 
   <div>
     <label for="fname-<?=$curr_passenger_index?>">First Name</label>

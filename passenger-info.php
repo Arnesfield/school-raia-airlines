@@ -45,8 +45,8 @@ if (isset($_POST['passenger_info'])) {
 else {
   $total_forms = $total_passengers;
 
-  if (isset($_SESSION['reservation']['return_choice']))
-    $total_forms *= 2;
+  // if (isset($_SESSION['reservation']['return_choice']))
+  //   $total_forms *= 2;
 
   for ($i = 0; $i < $total_forms; $i++) {
     ${"seat_id-$i"} = '';
@@ -75,7 +75,7 @@ else {
       $curr_passenger_index++;
     }
   ?>
-
+<!--
   <?php if (isset($_SESSION['reservation']['return_choice'])) { ?>
 
   <h4>Return Seats</h4>
@@ -88,7 +88,7 @@ else {
   ?>
 
   <?php } ?>
-
+-->
   <div>
     <button type"submit" name="passenger_info">Submit</button>
   </div>
