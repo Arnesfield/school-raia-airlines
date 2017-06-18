@@ -12,6 +12,9 @@ $query = "
 
 $record = $conn->query($query);
 
+// NOTE
+// Also consider taken seats based on transaction table
+
 $_SESSION['reservation'][$what_seat] = array();
 
 foreach ($record as $row) {

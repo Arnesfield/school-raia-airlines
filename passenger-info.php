@@ -75,7 +75,7 @@ else {
       $curr_passenger_index++;
     }
   ?>
-<!--
+
   <?php if (isset($_SESSION['reservation']['return_choice'])) { ?>
 
   <h4>Return Seats</h4>
@@ -88,7 +88,7 @@ else {
   ?>
 
   <?php } ?>
--->
+
   <div>
     <button type"submit" name="passenger_info">Submit</button>
   </div>

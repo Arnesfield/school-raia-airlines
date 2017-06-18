@@ -264,12 +264,17 @@ if (isset($_SESSION['reservation']['return_choice'])) {
 
 </div>
 
+<?php
+
+$_SESSION['reservation']['total_payment'] = $total;
+
+?>
+
 <div>
 
-
+  <a href="res-payment.php">Next</a>
 
 </div>
-
 
 </body>
 </html>
