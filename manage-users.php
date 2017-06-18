@@ -12,13 +12,33 @@ require_once('action/db-connection.php');
 
 <?php
 // query system users
-$query = "
-  SELECT * FROM users
-  WHERE type = 'normal'
-";
 
-$record = $conn->query($query);
+if (isset($_GET['q'])) {
+  $q = mysqli_real_escape_string( $conn, strip_tags(trim($_GET['q'])) );
+  $record = get_record_from_query("
+    SELECT * FROM users
+    WHERE
+      type = 'normal' AND
+      LOWER( CONCAT(username, fname, lname) ) LIKE LOWER('%$q%')
+  ");
+}
+
+else {
+  $record = get_record_from_query("
+    SELECT * FROM users
+    WHERE type = 'normal'
+  ");
+}
+
 ?>
+
+<h2>Manage System Users</h2>
+
+<?php require_once('markup/form-search.php'); ?>
+
+<form action="add-user.php" method="post">
+  <button type="submit" name="add">Add User</button>
+</form>
 
 <!-- display system users -->
 <div>
@@ -26,6 +46,7 @@ $record = $conn->query($query);
 <table>
 
   <tr>
+    <th>&nbsp;</th>
     <th>Username</th>
     <th>Name</th>
     <th>Active</th>
@@ -33,6 +54,17 @@ $record = $conn->query($query);
 
   <?php foreach ($record as $row) { ?>
   <tr>
+    
+    <td>
+      <div>
+
+        <form action="modify-user.php" method="post">
+          <input type="hidden" name="uid" value="<?=$row['id']?>" />
+          <button type="submit" name="edit">Edit</button>
+        </form>
+
+      </div>
+    </td>
     
     <td>
       <div>
@@ -57,6 +89,7 @@ $record = $conn->query($query);
   </tr>
 
   <?php } ?>
+
 </table>
 
 </div>

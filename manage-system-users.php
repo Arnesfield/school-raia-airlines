@@ -12,15 +12,32 @@ require_once('action/db-connection.php');
 
 <?php
 // query system users
-$query = "
-  SELECT * FROM users
-  WHERE type = 'admin'
-";
+if (isset($_GET['q'])) {
+  $q = mysqli_real_escape_string( $conn, strip_tags(trim($_GET['q'])) );
+  $record = get_record_from_query("
+    SELECT * FROM users
+    WHERE
+      type = 'admin' AND
+      LOWER(username) LIKE LOWER('%$q%')
+  ");
+}
 
-$record = $conn->query($query);
+else {
+  $record = get_record_from_query("
+    SELECT * FROM users
+    WHERE type = 'admin'
+  ");
+}
+
 ?>
 
 <h2>Manage System Users</h2>
+
+<?php require_once('markup/form-search.php'); ?>
+
+<form action="add-admin.php" method="post">
+  <button type="submit" name="add">Add System User</button>
+</form>
 
 <!-- display system users -->
 <div>
@@ -28,6 +45,7 @@ $record = $conn->query($query);
 <table>
 
   <tr>
+    <th>&nbsp;</th>
     <th>Username</th>
     <th>Active</th>
   </tr>
@@ -35,6 +53,17 @@ $record = $conn->query($query);
   <?php foreach ($record as $row) { ?>
   <tr>
     
+    <td>
+      <div>
+
+        <form action="modify-admin.php" method="post">
+          <input type="hidden" name="uid" value="<?=$row['id']?>" />
+          <button type="submit" name="edit">Edit</button>
+        </form>
+
+      </div>
+    </td>
+
     <td>
       <div>
         <?=$row['username']?>
@@ -53,6 +82,21 @@ $record = $conn->query($query);
 </table>
 
 </div>
+
+<?php
+if (isset($_POST['edit'])) {
+
+  echo $_POST['uid'];
+
+  // redirect to action
+  // header('location: mofidy-admin.php');
+}
+
+else if (isset($_POST['add'])) {
+  // redirect to action
+  // header('location: add-admin.php');
+}
+?>
 
 </body>
 </html>

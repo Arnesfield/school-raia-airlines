@@ -56,8 +56,8 @@ if (!$available) {
 
     <td>
       <div>
-        <?=date_format(date_create($row['departure_time']), 'H:i')?> /
-        <?=date_format(date_create($row['arrival_time']), 'H:i')?>
+        <?=date('H:i', strtotime($row['departure_time']))?> /
+        <?=date('H:i', strtotime($row['arrival_time']))?>
       </div>
     </td>
 
