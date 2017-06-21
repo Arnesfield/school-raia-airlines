@@ -43,7 +43,8 @@ $record = $conn->query($query)->fetch_assoc();
 $origin_a_name = $record['name'];
 $origin_name = $record['place'];
 
-$query = "
+// main query
+$main_q = "
   SELECT
     f.id AS 'flight_id',
     f.flight_code AS 'flight_code',
@@ -54,9 +55,10 @@ $query = "
     f.price_w_all AS 'price_w_all'
   FROM seats s, flights f
   WHERE
-    s.id = {$departure_seats[0]} AND
     s.flight_id = f.id
 ";
+
+$query = $main_q . " AND s.id = {$departure_seats[0]}";
 echo $query;
 $record = $conn->query($query)->fetch_assoc();
 $dept_fid = $record['flight_id'];
@@ -81,20 +83,7 @@ $destination_name = $record['place'];
 // $code_dest = $conn->query($query)->fetch_assoc()['flight_code'];
 
 if (isset($_SESSION['reservation']['return_choice'])) {
-  $query = "
-    SELECT
-      f.id AS 'flight_id',
-      f.flight_code AS 'flight_code',
-      f.departure_time AS 'departure_time',
-      f.arrival_time AS 'arrival_time',
-      f.price AS 'price',
-      f.price_w_baggage AS 'price_w_baggage',
-      f.price_w_all AS 'price_w_all'
-    FROM seats s, flights f
-    WHERE
-      s.id = {$return_seats[0]} AND
-      s.flight_id = f.id
-  ";
+  $query = $main_q . " AND s.id = {$return_seats[0]}";
   $record = $conn->query($query)->fetch_assoc();
   $return_fid = $record['flight_id'];
   $return_fcode = $record['flight_code'];

@@ -78,6 +78,8 @@ else {
 
   <?php if (isset($_SESSION['reservation']['return_choice'])) { ?>
 
+<!--
+  removed
   <h4>Return Seats</h4>
 
   <?php
@@ -88,6 +90,7 @@ else {
   ?>
 
   <?php } ?>
+-->
 
   <div>
     <button type"submit" name="passenger_info">Submit</button>
