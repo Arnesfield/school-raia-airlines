@@ -26,12 +26,16 @@ foreach ($_SESSION['reservation']['search_flights'] as $key => $value) {
   $$key = $value;
 }
 
+// use this array to store data
+$available_seats = array();
+
 // set variables inside flights-query.php
 $available = true;
 
 $fid_1 = $origin;
 $fid_2 = $destination;
 $record_name = 'departure_record';
+$date_name = 'departure_date';
 
 require('action/flights-query.php');
 
@@ -42,6 +46,7 @@ if (isset($do_return_date)) {
   $fid_1 = $destination;
   $fid_2 = $origin;
   $record_name = 'return_record';
+  $date_name = 'return_date';
 
   require('action/flights-query.php');
 }

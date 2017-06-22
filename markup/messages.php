@@ -60,4 +60,10 @@ if (isset($_COOKIE['msg_error'])) {
   setcookie('msg_error', 0, time()-60, '/');
 }
 
+if (isset($_COOKIE['msg_add_reservation'])) {
+  $msg = "Reservation successfully created.";
+  include_once('markup/msg.php');
+  setcookie('msg_add_reservation', 0, time()-60, '/');
+}
+
 ?>

@@ -11,8 +11,8 @@ require_once('action/db-connection.php');
 
 <?php
 // validate if submit exists
-if (!isset($_SESSION['reservation']['passenger_info'])) {
-  header('location: passenger-info.php');
+if (!isset($_SESSION['reservation']['hotel_id'])) {
+  header('location: hotels-select.php');
   exit();
 }
 ?>
@@ -226,15 +226,45 @@ if (isset($_SESSION['reservation']['return_choice'])) {
 
         <?php } ?>
 
+        <?php
+          $total = 0;
+          $hid = $_SESSION['reservation']['hotel_id'];
+          if ($hid != '0') {
+            echo $hid;
+            $rec = get_record_from_query("SELECT * FROM hotels WHERE id = $hid")->fetch_assoc();
+            $total = $rec['price']*1;
+            
+        ?>
+
+        <tr>
+          <td colspan=2>&nbsp;</td>
+          <th>
+            Hotel
+          </th>
+        </tr>
+
         <tr>
           <td colspan=2>&nbsp;</td>
           <td>
-            <strong>Total</strong>
+            <p><?=$rec['name']?></p>
+            <p><?=$rec['address']?></p>
           </td>
+          <td>
+            <?='P' . $rec['price']?>
+          </td>
+        </tr>
+
+        <?php } ?>
+
+        <tr>
+          <td colspan=2>&nbsp;</td>
+          <th>
+            Total
+          </th>
 
           <td>
             <?php
-              $total = $dept_price;
+              $total += $dept_price;
 
               if (isset($_SESSION['reservation']['return_choice'])) {
                 $total += $return_price;
@@ -261,6 +291,7 @@ $_SESSION['reservation']['total_payment'] = $total;
 
 <div>
 
+  <a href="hotels-select.php">Back</a>
   <a href="res-payment.php">Next</a>
 
 </div>

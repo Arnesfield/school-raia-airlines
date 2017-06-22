@@ -18,6 +18,7 @@ $main_q = "
     h.name AS 'hotel_name',
     h.address AS 'hotel_address',
     a.place AS 'place',
+    h.price AS 'price',
     h.status AS 'status'
   FROM
     hotels h, airports a
@@ -30,7 +31,7 @@ if (isset($_GET['q'])) {
   $record = get_record_from_query($main_q . "
     AND LOWER(
       CONCAT(
-        h.name, h.address, a.place
+        h.name, h.address, a.place, h.price
       )
     ) LIKE LOWER('%$q%')
   ");
@@ -60,6 +61,7 @@ else {
     <th>Hotel Name</th>
     <th>Hotel Address</th>
     <th>Place In</th>
+    <th>Price</th>
     <th>Active</th>
   </tr>
 
@@ -89,6 +91,12 @@ else {
     <td>
       <div>
         <?=$row['place']?>
+      </div>
+    </td>
+
+    <td>
+      <div>
+        <?='P' . $row['price']?>
       </div>
     </td>
 

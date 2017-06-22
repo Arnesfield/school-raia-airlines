@@ -149,33 +149,35 @@ function modify_airport($aid, $name, $place, $status) {
   $stmt->close();
 }
 
-function add_hotel($name, $address, $place, $status) {
+function add_hotel($name, $address, $price, $place, $status) {
   global $conn;
 
   // prepare and bind
   $query = "
-    INSERT INTO hotels(name, address, airport_id, status)
-    VALUES(?, ?, ?, ?);
+    INSERT INTO hotels(name, address, price, airport_id, status)
+    VALUES(?, ?, ?, ?, ?);
   ";
   
   $stmt = $conn->prepare($query);
-  $stmt->bind_param("ssis", $name, $address, $place, $status);
+  $stmt->bind_param("ssdis", $name, $address, $price, $place, $status);
   $stmt->execute();
   $stmt->close();
 }
 
-function modify_hotel($hid, $name, $address, $place, $status) {
+function modify_hotel($hid, $name, $address, $price, $place, $status) {
   global $conn;
 
   // prepare and bind
   $query = "
     UPDATE hotels
-    SET name = ?, address = ?, airport_id = ?, status = ?
+    SET
+      name = ?, address = ?, price = ?,
+      airport_id = ?, status = ?
     WHERE id = ?
   ";
 
   $stmt = $conn->prepare($query);
-  $stmt->bind_param("ssisi", $name, $address, $place, $status, $hid);
+  $stmt->bind_param("ssdisi", $name, $address, $price, $place, $status, $hid);
   $stmt->execute();
   $stmt->close();
 }
@@ -205,11 +207,16 @@ function add_flight(
   );
   $stmt->execute();
   $stmt->close();
+
+  // get id of last inserted flight
+  $query = "SELECT id FROM flights ORDER BY id DESC LIMIT 1";
+  $gen_id = $conn->query($query)->fetch_assoc()['id'];
+  require('action/seat-generate.php');
 }
 
 function modify_flight(
   $fid, $flight_code, $origin, $destination,
-  $departure_time, $arrival_time, $total_seats,
+  $departure_time, $arrival_time,
   $price, $price_w_baggage, $price_w_all, $status
 ) {
   global $conn;
@@ -223,7 +230,6 @@ function modify_flight(
       destination_id = ?,
       departure_time = ?,
       arrival_time = ?,
-      total_seats = ?,
       price = ?,
       price_w_baggage = ?,
       price_w_all = ?,
@@ -232,13 +238,69 @@ function modify_flight(
   ";
 
   $stmt = $conn->prepare($query);
-  $stmt->bind_param("siissidddsi",
+  $stmt->bind_param("siissdddsi",
     $flight_code, $origin, $destination,
-    $departure_time, $arrival_time, $total_seats,
+    $departure_time, $arrival_time,
     $price, $price_w_baggage, $price_w_all, $status, $fid
   );
   $stmt->execute();
   $stmt->close();
+}
+
+function add_reservation($arr) {
+  global $conn;
+
+  echo '<pre>';
+  print_r($arr);
+  echo '</pre>';
+
+  foreach ($arr as $key => $val) {
+    $$key = $val;
+  }
+
+  foreach($passenger_info as $key => $val) {
+    foreach ($val as $field => $info) {
+      $$field = $info;
+    }
+
+    // insert here
+    $query = "
+      INSERT INTO reservations(
+        user_id, flight_id, seat_id,
+        hotel_id, with_tour, flight_type,
+        psgr_name, psgr_birthdate,
+        departure_date, arrival_date, status, date_reserved, time_reserved
+      ) VALUES(
+        ?, ?, ?,
+        ?, ?, ?,
+        ?, ?, ?,
+        ?, '1', CURRENT_DATE(), CURRENT_TIME()
+      )
+    ";
+
+    $birthdate = $birth_year.'-'.$birth_month.'-'.$birth_day;
+
+    $stmt = $conn->prepare($query);
+
+    $user_id = $_SESSION['user_id'];
+    $departure_id = $departure_choice['departure_id'];
+    $seat_id = $departure_seats[$key];
+    $hotel_id = (int)$hotel_id;
+    $with_tour = $search_flights['with_tour'];
+    $flight_type = $departure_choice['departure_flight_type'];
+    $psgr_name = "$fname $lname";
+    $set_departure_date = $search_flights['departure_date'];
+
+    $stmt->bind_param("ssssssssss",
+      $user_id, $departure_id, $seat_id,
+      $hotel_id, $with_tour,
+      $flight_type,
+      $psgr_name, $birthdate,
+      $set_departure_date, $set_departure_date
+    );
+    $stmt->execute();
+    $stmt->close();
+  }
 }
 
 require('markup/messages.php');

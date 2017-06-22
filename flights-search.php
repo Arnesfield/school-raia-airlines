@@ -86,7 +86,7 @@ if (isset($_SESSION['reservation']) && !$_SESSION['is_admin']) {
     <input type="date" id="departure_date" name="departure_date" required
       min="<?=date('Y-m-d')?>" max="<?=date('Y')+1 . date('-m-d')?>"
       class="date-select"
-      value="<?=isset($_POST['departure_date']) ? $_POST['departure_date'] : date('Y-m-d')?>" />
+      value="<?=isset($_POST['departure_date']) ? $_POST['departure_date'] : date('Y-m-d')?>"/>
   </div>
 
   <div>
@@ -100,17 +100,18 @@ if (isset($_SESSION['reservation']) && !$_SESSION['is_admin']) {
         echo isset($_POST['do_return_date']) ? 'display: block' : 'display: none';
       ?>">
       <label for="return_date">Return Date</label>
-      <input type="date" id="return_date" name="return_date" required
+      <input type="date" id="return_date" name="return_date"
         min="<?=date('Y-m-d')?>" max="<?=date('Y')+1 . date('-m-d')?>"
-        class="date-select"
-        value="<?=isset($_POST['return_date']) ? $_POST['return_date'] : date('Y-m-d')?>" />
+        value="<?=isset($_POST['return_date']) ? $_POST['return_date'] : date('Y-m-d')?>"/>
     </div>
 
   </div>
 
   <script>
+    $('#return_date').attr('min', $('#departure_date').val());
     $('.date-select').change(function() {
       $('#return_date').attr('min', $('#departure_date').val());
+      $('#return_date').val($('#departure_date'));
     });
 
     $('#do_return_date').change(function() {
@@ -173,6 +174,11 @@ if (isset($_SESSION['reservation']) && !$_SESSION['is_admin']) {
   </script>
 
   <div>
+    <label for="with_tour">With Tour</label>
+    <input type="checkbox" id="with_tour" name="with_tour" />
+  </div>
+
+  <div>
     <button type="submit" name="search_flights">Search</button>
   </div>
   
@@ -204,6 +210,9 @@ if ( isset($_POST['search_flights']) ) {
 
   $_SESSION['reservation']['search_flights']['total_passengers'] =
     $_POST['no_adults']*1 + $_POST['no_children']*1 + $_POST['no_infant']*1;
+
+  $_SESSION['reservation']['search_flights']['with_tour'] =
+    !empty($_SESSION['reservation']['search_flights']['with_tour']) ? '1' : '0';
 
   // redirect here
   header('location: flights-select.php');

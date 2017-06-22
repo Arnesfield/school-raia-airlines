@@ -32,7 +32,7 @@ $origin = $row['origin_id'];
 $destination = $row['destination_id'];
 $departure_time = $row['departure_time'];
 $arrival_time = $row['arrival_time'];
-$total_seats = $row['total_seats'];
+// $total_seats = $row['total_seats'];
 $price = $row['price'];
 $price_w_baggage = $row['price_w_baggage'];
 $price_w_all = $row['price_w_all'];
@@ -46,7 +46,7 @@ if (isset($_POST['submit'])) {
   $destination = strip_tags(trim($_POST['destination']));
   $departure_time = strip_tags(trim($_POST['departure_time']));
   $arrival_time = strip_tags(trim($_POST['arrival_time']));
-  $total_seats = strip_tags(trim($_POST['total_seats']));
+  // $total_seats = strip_tags(trim($_POST['total_seats']));
   $price = strip_tags(trim($_POST['price']));
   $price_w_baggage = strip_tags(trim($_POST['price_w_baggage']));
   $price_w_all = strip_tags(trim($_POST['price_w_all']));
@@ -55,9 +55,8 @@ if (isset($_POST['submit'])) {
   if (
     empty($flight_code) || empty($origin) || 
     empty($destination) || empty($departure_time) || 
-    empty($arrival_time) || empty($total_seats) ||
-    empty($price) || empty($price_w_baggage) ||
-    empty($price_w_all)
+    empty($arrival_time) || empty($price) ||
+    empty($price_w_baggage) || empty($price_w_all)
   ) {
     show_message('Fields cannot be empty.');
   }
@@ -132,12 +131,6 @@ if (isset($_POST['submit'])) {
   </div>
 
   <div>
-    <label for="total_seats">Total Seats</label>
-    <input type="number" min="20" max="1000" id="total_seats" name="total_seats" required
-      value="<?=$total_seats?>"/>
-  </div>
-
-  <div>
     <label for="price">Price</label>
     <input type="number" min="20" max="1000000" id="price" name="price" required
       value="<?=$price?>"/>
@@ -180,7 +173,7 @@ if (isset($valid)) {
   $status = $status == 'checked' ? '1' : '0';
   modify_flight(
     $fid, $flight_code, $origin, $destination,
-    $departure_time, $arrival_time, $total_seats,
+    $departure_time, $arrival_time,
     $price, $price_w_baggage, $price_w_all, $status
   );
 

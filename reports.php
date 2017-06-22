@@ -24,7 +24,9 @@ $main_q = "
     f.departure_time AS 'departure_time',
     r.arrival_date AS 'arrival_date',
     f.arrival_time AS 'arrival_time',
-    h.name AS 'hotel_name'
+    h.name AS 'hotel_name',
+    s.id AS 'seat_id',
+    r.with_tour AS 'with_tour'
   FROM
     users u, reservations r, flights f,
     seats s, hotels h, airports a_orig, airports a_dest
@@ -44,7 +46,7 @@ if (isset($_GET['q'])) {
       CONCAT(
         r.date_reserved, r.time_reserved, u.username, f.flight_code,
         a_orig.place, a_dest.place, f.departure_date,
-        f.departure_time, f.arrival_date, f.arrival_time
+        f.departure_time, f.arrival_date, f.arrival_time, s.id
       )
     ) LIKE LOWER('%$q%')
   ");
@@ -71,6 +73,8 @@ else {
     <th>Flight Code</th>
     <th>Origin</th>
     <th>Destination</th>
+    <th>Seat Number</th>
+    <th>With Tour</th>
     <th>Hotel Name</th>
     <th>Departure Date</th>
     <th>Arrival Date</th>
@@ -107,6 +111,18 @@ else {
     <td>
       <div>
         <?=$row['destination']?>
+      </div>
+    </td>
+    
+    <td>
+      <div>
+        <?=$row['seat_id']?>
+      </div>
+    </td>
+    
+    <td>
+      <div>
+        <?=$row['with_tour'] == '1' ? 'Yes' : 'No'?>
       </div>
     </td>
     

@@ -31,16 +31,16 @@ if (!$available) {
   </tr>
 
   <?php
-    $index = 0;
     $added_rows = 0;
-    foreach ($curr_record as $row) {
+    foreach ($curr_record as $skey => $row) {
+      // echo $available_seats[$index]['total_available_seats']*1;
   ?>
   <?php
     // if id
-    if ($available_seats[$index]['flight_id'] == $row['id']) {
+    if ($available_seats[$skey]['flight_id'] == $row['id']) {
 
       // skip current info if full
-      if ($available_seats[$index]['total_available_seats']*1 < $total_passengers)
+      if ($available_seats[$skey]['total_available_seats']*1 < $total_passengers)
         continue;
     }
 

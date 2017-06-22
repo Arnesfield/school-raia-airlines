@@ -76,9 +76,9 @@ else {
     }
   ?>
 
+<!--
   <?php if (isset($_SESSION['reservation']['return_choice'])) { ?>
 
-<!--
   removed
   <h4>Return Seats</h4>
 
@@ -93,6 +93,7 @@ else {
 -->
 
   <div>
+    <a href="seats-select.php">&laquo; Back</a>
     <button type"submit" name="passenger_info">Submit</button>
   </div>
 
@@ -116,8 +117,8 @@ if (isset($_POST['passenger_info'])) {
     );
   }
 
-  // redirect to summary
-  header('location: res-summary.php');
+  // redirect to hotels
+  header('location: hotels-select.php');
 }
 ?>
 

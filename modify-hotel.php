@@ -28,6 +28,7 @@ $query = "
 $row = $conn->query($query)->fetch_assoc();
 $name = $row['name'];
 $address = $row['address'];
+$price = $row['price'];
 $place = $row['airport_id'];
 $status = $row['status'] == '1' ? 'checked' : '';
 ?>
@@ -37,9 +38,10 @@ if (isset($_POST['submit'])) {
   $name = strip_tags(trim($_POST['name']));
   $address = strip_tags(trim($_POST['address']));
   $place = strip_tags(trim($_POST['place']));
+  $price = strip_tags(trim($_POST['price']));
   $status = isset($_POST['status']) ? 'checked' : '';
 
-  if (empty($name) || empty($address)) {
+  if (empty($name) || empty($address) || empty($price)) {
     show_message('Fields cannot be empty.');
   }
   else
@@ -48,7 +50,7 @@ if (isset($_POST['submit'])) {
 
 ?>
 
-<h2>Hotel Hotel</h2>
+<h2>Modify Hotel</h2>
 
 <div>
 
@@ -66,6 +68,13 @@ if (isset($_POST['submit'])) {
     <label for="address">Hotel Address</label>
     <input type="text" id="address" name="address" required
       value="<?=$address?>"/>
+  </div>
+
+  
+  <div>
+    <label for="price">Hotel Price</label>
+    <input type="number" min="1" max="1000000" id="price" name="price" required
+      value="<?=$price?>"/>
   </div>
 
   <div>
@@ -108,7 +117,7 @@ if (isset($_POST['submit'])) {
 if (isset($valid)) {
   // insert
   $status = $status == 'checked' ? '1' : '0';
-  modify_hotel($hid, $name, $address, $place, $status);
+  modify_hotel($hid, $name, $address, $price, $place, $status);
 
   set_message('msg_modify_hotel');
   header('location: manage-hotels.php');

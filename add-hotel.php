@@ -15,9 +15,10 @@ if (isset($_POST['submit'])) {
   $name = strip_tags(trim($_POST['name']));
   $address = strip_tags(trim($_POST['address']));
   $place = strip_tags(trim($_POST['place']));
+  $price = strip_tags(trim($_POST['price']));
   $status = isset($_POST['status']) ? 'checked' : '';
 
-  if (empty($name) || empty($address)) {
+  if (empty($name) || empty($address) || empty($price)) {
     show_message('Fields cannot be empty.');
   }
   else
@@ -28,6 +29,7 @@ else {
   $name = '';
   $address = '';
   $place = '';
+  $price = '';
   $status = 'checked';
 }
 ?>
@@ -46,6 +48,11 @@ else {
   <div>
     <label for="address">Hotel Address</label>
     <input type="text" id="address" name="address" required/>
+  </div>
+
+  <div>
+    <label for="price">Hotel Price</label>
+    <input type="number" min="1" max="1000000" id="price" name="price" required/>
   </div>
 
   <div>
@@ -91,7 +98,7 @@ else {
 if (isset($valid)) {
   // insert
   $status = $status == 'checked' ? '1' : '0';
-  add_hotel($name, $address, $place, $status);
+  add_hotel($name, $address, $price, $place, $status);
 
   set_message('msg_add_hotel');
   header('location: manage-hotels.php');
