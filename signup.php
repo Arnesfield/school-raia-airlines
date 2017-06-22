@@ -30,6 +30,15 @@
     // unset message
     setcookie('msg_password_mismatch', 0, time()-60, '/');
   }
+
+  if (isset($_COOKIE['msg_captcha'])) {
+    // password mismatch
+    $msg = "Captcha verification required. Please try again.";
+    include_once('markup/msg.php');
+
+    // unset message
+    setcookie('msg_captcha', 0, time()-60, '/');
+  }
   
   session_start();
   
@@ -155,6 +164,9 @@
     <input type="tel" id="contact" name="contact"
       required pattern="^([+]63|[0])[\d]{10}$" value="<?php print_v('contact'); ?>" />
   </div>
+
+  <div class="g-recaptcha" data-sitekey="6LdobCYUAAAAAAmW1y-w5OIQtNIKjfoXLk3vtF3o"></div>
+  <script src='https://www.google.com/recaptcha/api.js'></script>
   
   <input type="submit" name="form_signup"/>
 </form>

@@ -20,10 +20,9 @@ $main_q = "
     a.place AS 'place',
     h.status AS 'status'
   FROM
-    hotels h, flights f, airports a
+    hotels h, airports a
   WHERE
-    f.id = h.flight_id AND
-    f.destination_id = a.id
+    h.airport_id = a.id
 ";
 
 if (isset($_GET['q'])) {
@@ -69,7 +68,7 @@ else {
   <tr>
 
     <td>
-      <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+      <form action="modify-hotel.php" method="post">
         <input type="hidden" name="hid" value="<?=$row['id']?>" />
         <button type="submit" name="edit">Edit</button>
       </form>
@@ -106,16 +105,6 @@ else {
 </table>
 
 </div>
-
-<?php
-if (isset($_POST['edit'])) {
-
-  echo $_POST['hid'];
-
-  // redirect to action
-  // header('location: mofidy-hotel.php');
-}
-?>
 
 </body>
 </html>

@@ -53,8 +53,6 @@ if (isset($_GET['q'])) {
 else {
   $record = get_record_from_query($main_q);
 }
-
-echo $record->num_rows;
 ?>
 
 

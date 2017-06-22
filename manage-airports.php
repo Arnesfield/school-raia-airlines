@@ -34,7 +34,7 @@ else {
 <?php require_once('markup/form-search.php'); ?>
 
 <form action="add-airport.php" method="post">
-  <button type="submit" name="add">Add Hotel</button>
+  <button type="submit" name="add">Add Airport</button>
 </form>
 
 
@@ -44,18 +44,17 @@ else {
 
   <tr>
     <th>&nbsp;</th>
-    <th>Hotel Name</th>
+    <th>Airport Name</th>
     <th>Place / City</th>
+    <th>Status</th>
   </tr>
-
-  
 
   <?php foreach ($record as $row) { ?>
   
   <tr>
 
     <td>
-      <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+      <form action="modify-airport.php" method="post">
         <input type="hidden" name="aid" value="<?=$row['id']?>" />
         <button type="submit" name="edit">Edit</button>
       </form>
@@ -73,6 +72,12 @@ else {
       </div>
     </td>
 
+    <td>
+      <div>
+        <?=$row['status'] == '1' ? 'Yes' : 'No'?>
+      </div>
+    </td>
+
   </tr>
 
   <?php } ?>
@@ -80,16 +85,6 @@ else {
 </table>
 
 </div>
-
-<?php
-if (isset($_POST['edit'])) {
-
-  echo $_POST['aid'];
-
-  // redirect to action
-  // header('location: mofidy-hotel.php');
-}
-?>
 
 </body>
 </html>

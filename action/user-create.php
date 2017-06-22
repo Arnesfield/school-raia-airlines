@@ -1,20 +1,23 @@
 <?php
 if (isset($_POST['form_signup'])) {
   require_once('db-connection.php');
-  
+
+  // validate captcha
+  require('captcha-verify.php');
+
   // clear session first
   
   $username = mysqli_real_escape_string( $conn, strip_tags(trim($_POST['username'])) );
-  $password = $_POST['password'];
+  $password = strip_tags(trim($_POST['password']));
   $confirm_password = $_POST['confirm_password'];
   $email = mysqli_real_escape_string($conn, strip_tags(trim($_POST['email'])) );
-  $fname = $_POST['fname'];
-  $lname = $_POST['lname'];
+  $fname = strip_tags(trim($_POST['fname']));
+  $lname = strip_tags(trim($_POST['lname']));
   // yyyy-mm-dd
   $birthdate = $_POST['birth_year'].'-'.$_POST['birth_month'].'-'.$_POST['birth_day'];
-  $gender = $_POST['gender'];
-  $address = $_POST['address'];
-  $contact = $_POST['contact'];
+  $gender = strip_tags(trim($_POST['gender']));
+  $address = strip_tags(trim($_POST['address']));
+  $contact = strip_tags(trim($_POST['contact']));
   
   // check if confirm password matches
   
@@ -30,7 +33,7 @@ if (isset($_POST['form_signup'])) {
   
   $query_result = $conn->query($query);
   // if no same username or email
-  if ($query_result->num_rows == 0 && $is_password_match) {
+  if ($query_result->num_rows == 0 && $is_password_match && $valid_captcha) {
     // create verification code
     $verification_code = md5(uniqid(rand(), true));
 
@@ -85,6 +88,9 @@ if (isset($_POST['form_signup'])) {
     // if password do not match
     if (!$is_password_match)
       setcookie('msg_password_mismatch', 1, time()+60, '/');
+
+    if (!$valid_captcha)
+      setcookie('msg_captcha', 1, time()+60, '/');
     
     session_start();
 

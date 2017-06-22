@@ -88,15 +88,5 @@ else {
 
 </div>
 
-<?php
-if (isset($_POST['edit'])) {
-
-  echo $_POST['uid'];
-
-  // redirect to action
-  // header('location: mofidy-user.php');
-}
-?>
-
 </body>
 </html>

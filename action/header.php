@@ -69,5 +69,71 @@ function modify_admin($uid, $username, $password, $status, $set_password) {
   $stmt->close();
 }
 
+function add_airport($name, $place, $status) {
+  global $conn;
+
+  // prepare and bind
+  $query = "
+    INSERT INTO airports(name, place, status)
+    VALUES(?, ?, ?);
+  ";
+  
+  $stmt = $conn->prepare($query);
+  $stmt->bind_param("sss", $name, $place, $status);
+
+  $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+  $stmt->execute();
+  $stmt->close();
+}
+
+function modify_airport($aid, $name, $place, $status) {
+  global $conn;
+
+  // prepare and bind
+  $query = "
+    UPDATE airports
+    SET name = ?, place = ?, status = ?
+    WHERE id = ?
+  ";
+
+  $stmt = $conn->prepare($query);
+  $stmt->bind_param("sssi", $name, $place, $status, $aid);
+  $stmt->execute();
+  $stmt->close();
+}
+
+function add_hotel($name, $address, $place, $status) {
+  global $conn;
+
+  // prepare and bind
+  $query = "
+    INSERT INTO hotels(name, address, airport_id, status)
+    VALUES(?, ?, ?, ?);
+  ";
+  
+  $stmt = $conn->prepare($query);
+  $stmt->bind_param("ssis", $name, $address, $place, $status);
+
+  $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+  $stmt->execute();
+  $stmt->close();
+}
+
+function modify_hotel($hid, $name, $address, $place, $status) {
+  global $conn;
+
+  // prepare and bind
+  $query = "
+    UPDATE hotels
+    SET name = ?, address = ?, airport_id = ?, status = ?
+    WHERE id = ?
+  ";
+
+  $stmt = $conn->prepare($query);
+  $stmt->bind_param("ssisi", $name, $address, $place, $status, $hid);
+  $stmt->execute();
+  $stmt->close();
+}
+
 require('markup/messages.php');
 ?>

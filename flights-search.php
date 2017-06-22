@@ -9,33 +9,33 @@ require_once('markup/user-nav.html');
 require_once('action/redirect-user.php');
 require_once('action/db-connection.php');
 
-// if search flights is set here and is user
-if (isset($_SESSION['reservation']) && !$_SESSION['is_admin']) {
-  // unset search flights
-  unset($_SESSION['reservation']);
-}
-
 ?>
 
 <?php
 // query flights here
-$query = "SELECT id, place FROM airports";
+$query = "SELECT id, place FROM airports WHERE status = '1'";
 $record = $conn->query($query);
 
 
 // if session array is set
-if (isset($_SESSION['search_flights'])) {
-  foreach ($_SESSION['search_flights'] as $key => $value) {
+if (isset($_SESSION['reservation']['search_flights'])) {
+  foreach ($_SESSION['reservation']['search_flights'] as $key => $value) {
     $_POST[$key] = $value;
   }
 
   // unset variables
-  unset($_SESSION['search_flights']);
+  unset($_SESSION['reservation']['search_flights']);
   unset($_POST['search_flights']);
 }
 
 // foreach ($_POST as $key => $value)
   // echo $key . ' ' . $value . '<br/>';
+
+// if search flights is set here and is user
+if (isset($_SESSION['reservation']) && !$_SESSION['is_admin']) {
+  // unset search flights
+  unset($_SESSION['reservation']);
+}
 
 ?>
 
@@ -97,7 +97,7 @@ if (isset($_SESSION['search_flights'])) {
   
     <div id="container-return_date"
       style="<?php
-        echo isset($_POST['do_return_date']) ? '' : 'display: none';
+        echo isset($_POST['do_return_date']) ? 'display: block' : 'display: none';
       ?>">
       <label for="return_date">Return Date</label>
       <input type="date" id="return_date" name="return_date" required
