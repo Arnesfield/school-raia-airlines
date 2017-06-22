@@ -113,8 +113,6 @@ function add_hotel($name, $address, $place, $status) {
   
   $stmt = $conn->prepare($query);
   $stmt->bind_param("ssis", $name, $address, $place, $status);
-
-  $hashed_password = password_hash($password, PASSWORD_DEFAULT);
   $stmt->execute();
   $stmt->close();
 }
@@ -131,6 +129,67 @@ function modify_hotel($hid, $name, $address, $place, $status) {
 
   $stmt = $conn->prepare($query);
   $stmt->bind_param("ssisi", $name, $address, $place, $status, $hid);
+  $stmt->execute();
+  $stmt->close();
+}
+
+function add_flight(
+  $flight_code, $origin, $destination,
+  $departure_time, $arrival_time, $total_seats,
+  $price, $price_w_baggage, $price_w_all, $status
+) {
+  global $conn;
+
+  // prepare and bind
+  $query = "
+    INSERT INTO flights(
+      flight_code, origin_id, destination_id,
+      departure_time, arrival_time, total_seats,
+      price, price_w_baggage, price_w_all, status
+    )
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+  ";
+  
+  $stmt = $conn->prepare($query);
+  $stmt->bind_param("siissiddds",
+    $flight_code, $origin, $destination,
+    $departure_time, $arrival_time, $total_seats,
+    $price, $price_w_baggage, $price_w_all, $status
+  );
+  $stmt->execute();
+  $stmt->close();
+}
+
+function modify_flight(
+  $fid, $flight_code, $origin, $destination,
+  $departure_time, $arrival_time, $total_seats,
+  $price, $price_w_baggage, $price_w_all, $status
+) {
+  global $conn;
+
+  // prepare and bind
+  $query = "
+    UPDATE flights
+    SET
+      flight_code = ?,
+      origin_id = ?,
+      destination_id = ?,
+      departure_time = ?,
+      arrival_time = ?,
+      total_seats = ?,
+      price = ?,
+      price_w_baggage = ?,
+      price_w_all = ?,
+      status = ?
+    WHERE id = ?
+  ";
+
+  $stmt = $conn->prepare($query);
+  $stmt->bind_param("siissidddsi",
+    $flight_code, $origin, $destination,
+    $departure_time, $arrival_time, $total_seats,
+    $price, $price_w_baggage, $price_w_all, $status, $fid
+  );
   $stmt->execute();
   $stmt->close();
 }

@@ -36,6 +36,18 @@ if (isset($_COOKIE['msg_modify_hotel'])) {
   setcookie('msg_modify_hotel', 0, time()-60, '/');
 }
 
+if (isset($_COOKIE['msg_add_flight'])) {
+  $msg = "Flight successfully added.";
+  include_once('markup/msg.php');
+  setcookie('msg_add_flight', 0, time()-60, '/');
+}
+
+if (isset($_COOKIE['msg_modify_flight'])) {
+  $msg = "Flight successfully modified.";
+  include_once('markup/msg.php');
+  setcookie('msg_modify_flight', 0, time()-60, '/');
+}
+
 if (isset($_COOKIE['msg_error'])) {
   $msg = "An error occured.";
   include_once('markup/msg.php');

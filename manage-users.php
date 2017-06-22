@@ -30,11 +30,11 @@ else {
 
 ?>
 
-<h2>Manage System Users</h2>
+<h2>Manage Users</h2>
 
 <?php require_once('markup/form-search.php'); ?>
 
-<!-- display system users -->
+<!-- display users -->
 <div>
 
 <table>

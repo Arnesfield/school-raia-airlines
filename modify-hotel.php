@@ -70,7 +70,7 @@ if (isset($_POST['submit'])) {
       foreach ($record as $row) {
       ?>
       <option value="<?=$row['id']?>"
-        <?=$place == $row['id'] ? 'selected': '';?> >
+        <?=$place == $row['id'] ? 'selected': ''?> >
         <?=$row['place']?>
       </option>
       <?php } ?>

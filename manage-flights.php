@@ -11,8 +11,7 @@ require_once('action/db-connection.php');
 ?>
 
 <?php
-// query system users
-
+// query
 $main_q = "
   SELECT
     f.id AS 'id',
@@ -58,10 +57,10 @@ else {
 <?php require_once('markup/form-search.php'); ?>
 
 <form action="add-flight.php" method="post">
-  <button type="submit" name="add">Add User</button>
+  <button type="submit" name="add">Add Flight</button>
 </form>
 
-<!-- display system users -->
+
 <div>
 
 <table>
@@ -86,7 +85,7 @@ else {
     <td>
       <div>
 
-        <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+        <form action="modify-flight.php" method="post">
           <input type="hidden" name="fid" value="<?=$row['id']?>" />
           <button type="submit" name="edit">Edit</button>
         </form>
