@@ -10,8 +10,14 @@ require_once('markup/admin-nav.html');
 require_once('action/db-connection.php');
 ?>
 
-
 <?php
+if ( !isset($_POST['edit']) ) {
+  if (!isset($_POST['submit'])) {
+    set_message('msg_error');
+    header('location: manage-flights.php');
+  }
+}
+
 $fid = $_POST['fid'];
 
 $query = "

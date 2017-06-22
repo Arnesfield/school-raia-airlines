@@ -69,6 +69,53 @@ function modify_admin($uid, $username, $password, $status, $set_password) {
   $stmt->close();
 }
 
+function modify_user(
+  $uid, $username, $password,
+  $email, $fname, $lname, $birthdate,
+  $gender, $address, $contact, $status, $set_password
+) {
+  global $conn;
+
+  // prepare and bind
+  $s = '';
+  if ($set_password) {
+    $s = ', password = ?';
+  }
+  $query = "
+    UPDATE users
+    SET
+      username = ? $s,
+      email = ?,
+      fname = ?,
+      lname = ?,
+      birthdate = ?,
+      gender = ?,
+      address = ?,
+      contact = ?,
+      status = ?
+    WHERE
+      id = ?
+  ";
+
+  $stmt = $conn->prepare($query);
+
+  if ($set_password) {
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $stmt->bind_param("ssssssssssi",
+      $username, $hashed_password, $email, $fname, $lname, $birthdate,
+      $gender, $address, $contact, $status, $uid
+    );
+  }
+  else
+    $stmt->bind_param("sssssssssi",
+      $username, $email, $fname, $lname, $birthdate,
+      $gender, $address, $contact, $status, $uid
+    );
+  
+  $stmt->execute();
+  $stmt->close();
+}
+
 function add_airport($name, $place, $status) {
   global $conn;
 

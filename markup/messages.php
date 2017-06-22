@@ -12,6 +12,12 @@ if (isset($_COOKIE['msg_modify_admin'])) {
   setcookie('msg_modify_admin', 0, time()-60, '/');
 }
 
+if (isset($_COOKIE['msg_modify_user'])) {
+  $msg = "User successfully modified.";
+  include_once('markup/msg.php');
+  setcookie('msg_modify_user', 0, time()-60, '/');
+}
+
 if (isset($_COOKIE['msg_add_airport'])) {
   $msg = "Airport successfully added.";
   include_once('markup/msg.php');

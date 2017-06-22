@@ -11,6 +11,13 @@ require_once('action/db-connection.php');
 ?>
 
 <?php
+if ( !isset($_POST['edit']) ) {
+  if (!isset($_POST['submit'])) {
+    set_message('msg_error');
+    header('location: manage-airports.php');
+  }
+}
+
 $aid = $_POST['aid'];
 
 $query = "
