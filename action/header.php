@@ -35,9 +35,37 @@ function add_admin($username, $password, $status) {
   $stmt->bind_param("sss", $username, $hashed_password, $status);
 
   $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
   $stmt->execute();
+  $stmt->close();
+}
 
+function modify_admin($uid, $username, $password, $status, $set_password) {
+  global $conn;
+
+  // prepare and bind
+  $s = '';
+  if ($set_password) {
+    $s = ', password = ?';
+  }
+  $query = "
+    UPDATE users
+    SET
+      username = ? $s,
+      status = ?
+    WHERE
+      id = ?
+  ";
+
+  $stmt = $conn->prepare($query);
+
+  if ($set_password) {
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $stmt->bind_param("sssi", $username, $hashed_password, $status, $uid);
+  }
+  else
+    $stmt->bind_param("ssi", $username, $status, $uid);
+  
+  $stmt->execute();
   $stmt->close();
 }
 

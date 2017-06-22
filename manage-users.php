@@ -34,10 +34,6 @@ else {
 
 <?php require_once('markup/form-search.php'); ?>
 
-<form action="add-user.php" method="post">
-  <button type="submit" name="add">Add User</button>
-</form>
-
 <!-- display system users -->
 <div>
 
@@ -56,7 +52,7 @@ else {
     <td>
       <div>
 
-        <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+        <form action="modify-user.php" method="post">
           <input type="hidden" name="uid" value="<?=$row['id']?>" />
           <button type="submit" name="edit">Edit</button>
         </form>

@@ -54,7 +54,7 @@ else {
     <td>
       <div>
 
-        <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+        <form action="modify-admin.php" method="post">
           <input type="hidden" name="uid" value="<?=$row['id']?>" />
           <button type="submit" name="edit">Edit</button>
         </form>

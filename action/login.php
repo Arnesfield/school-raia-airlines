@@ -11,7 +11,9 @@ if (isset($_POST['form_login'])) {
   $query = "
     SELECT id, username, password, type, status
     FROM users
-    WHERE username = '$username'
+    WHERE
+      username = '$username' AND
+      status != '0'
   ";
   
   $query_result = $conn->query($query);
