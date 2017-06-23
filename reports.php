@@ -14,6 +14,7 @@ require_once('action/db-connection.php');
 // query
 $main_q = "
   SELECT
+    r.id AS 'res_id',
     r.date_reserved AS 'date_reserved',
     r.time_reserved AS 'time_reserved',
     u.username AS 'username',
@@ -26,7 +27,8 @@ $main_q = "
     f.arrival_time AS 'arrival_time',
     h.name AS 'hotel_name',
     s.id AS 'seat_id',
-    r.with_tour AS 'with_tour'
+    r.with_tour AS 'with_tour',
+    r.status AS 'status'
   FROM
     users u, reservations r, flights f,
     seats s, hotels h, airports a_orig, airports a_dest
@@ -68,6 +70,7 @@ else {
 <table>
 
   <tr>
+    <th>&nbsp;</th>
     <th>Date Reserved</th>
     <th>Username</th>
     <th>Flight Code</th>
@@ -78,10 +81,22 @@ else {
     <th>Hotel Name</th>
     <th>Departure Date</th>
     <th>Arrival Date</th>
+    <th>Active</th>
   </tr>
 
   <?php foreach ($record as $row) { ?>
   <tr>
+
+    <td>
+
+      <form action="<?=$_SERVER['PHP_SELF']?>" method="post" onsubmit="return do_toggle()">
+        <input type="hidden" name="rid" value="<?=$row['res_id']?>" />
+        <input type="hidden" name="status" value="<?=$row['status']?>" />
+
+        <button type="submit" name="toggle">Toggle</button>
+      </form>
+
+    </td>
     
     <td>
       <div>
@@ -146,6 +161,12 @@ else {
       </div>
     </td>
 
+    <td>
+      <div>
+        <?=$row['status'] == '1' ? 'Yes' : 'No'?>
+      </div>
+    </td>
+
   </tr>
 
   <?php } ?>
@@ -154,6 +175,20 @@ else {
 
 </div>
 
+<script>
+function do_toggle() {
+  return confirm('Toggle status of this reservation?');
+}
+</script>
+
+<?php
+if (isset($_POST['toggle'])) {
+  $status = $_POST['status'] == '1' ? '0' : '1';
+  modify_reservation($_POST['rid'], $status);
+  set_message('msg_modify_reservation');
+  header('location: reports.php');
+}
+?>
 
 </body>
 </html>

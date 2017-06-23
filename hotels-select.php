@@ -93,6 +93,7 @@ $record = $conn->query($query);
 </table>
 
   <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+    <a href="passenger-info.php">Back</a>
     <button type="submit" name="submit">No thanks!</button>
   </form>
 

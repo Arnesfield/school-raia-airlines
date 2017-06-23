@@ -66,4 +66,16 @@ if (isset($_COOKIE['msg_add_reservation'])) {
   setcookie('msg_add_reservation', 0, time()-60, '/');
 }
 
+if (isset($_COOKIE['msg_remove_reservation'])) {
+  $msg = "Reservation has been removed.";
+  include_once('markup/msg.php');
+  setcookie('msg_remove_reservation', 0, time()-60, '/');
+}
+
+if (isset($_COOKIE['msg_modify_reservation'])) {
+  $msg = "Reservation has been modified.";
+  include_once('markup/msg.php');
+  setcookie('msg_modify_reservation', 0, time()-60, '/');
+}
+
 ?>

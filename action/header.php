@@ -250,10 +250,6 @@ function modify_flight(
 function add_reservation($arr) {
   global $conn;
 
-  echo '<pre>';
-  print_r($arr);
-  echo '</pre>';
-
   foreach ($arr as $key => $val) {
     $$key = $val;
   }
@@ -301,6 +297,68 @@ function add_reservation($arr) {
     $stmt->execute();
     $stmt->close();
   }
+
+  if (isset($return_choice)) {
+    foreach($passenger_info as $key => $val) {
+      foreach ($val as $field => $info) {
+        $$field = $info;
+      }
+
+      // insert here
+      $query = "
+        INSERT INTO reservations(
+          user_id, flight_id, seat_id,
+          hotel_id, with_tour, flight_type,
+          psgr_name, psgr_birthdate,
+          departure_date, arrival_date, status, date_reserved, time_reserved
+        ) VALUES(
+          ?, ?, ?,
+          ?, ?, ?,
+          ?, ?, ?,
+          ?, '1', CURRENT_DATE(), CURRENT_TIME()
+        )
+      ";
+
+      $birthdate = $birth_year.'-'.$birth_month.'-'.$birth_day;
+
+      $stmt = $conn->prepare($query);
+
+      $user_id = $_SESSION['user_id'];
+      $departure_id = $return_choice['return_id'];
+      $seat_id = $departure_seats[$key];
+      $hotel_id = (int)$hotel_id;
+      $with_tour = $search_flights['with_tour'];
+      $flight_type = $return_choice['return_flight_type'];
+      $psgr_name = "$fname $lname";
+      $set_departure_date = $search_flights['return_date'];
+
+      $stmt->bind_param("ssssssssss",
+        $user_id, $departure_id, $seat_id,
+        $hotel_id, $with_tour,
+        $flight_type,
+        $psgr_name, $birthdate,
+        $set_departure_date, $set_departure_date
+      );
+      $stmt->execute();
+      $stmt->close();
+    }
+
+  }
+}
+
+function modify_reservation($rid, $status) {
+  global $conn;
+  
+  $sql = "
+    UPDATE reservations
+    SET status = ?
+    WHERE id = ?
+  ";
+
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param('si', $status, $rid);
+  $stmt->execute();
+  $stmt->close();
 }
 
 require('markup/messages.php');
