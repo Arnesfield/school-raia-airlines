@@ -42,6 +42,7 @@ else {
 }
 ?>
 
+<div class="content">
 
 <h2>Manage Hotels</h2>
 
@@ -111,6 +112,8 @@ else {
   <?php } ?>
 
 </table>
+
+</div>
 
 </div>
 

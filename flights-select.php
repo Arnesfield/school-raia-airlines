@@ -18,8 +18,6 @@ if (!isset($_SESSION['reservation']['search_flights'])) {
 }
 ?>
 
-<?php echo '<pre>'; print_r($_SESSION); echo '</pre>'; ?>
-
 <?php
 foreach ($_SESSION['reservation']['search_flights'] as $key => $value) {
   // echo $key . ' ' . $value . '<br/>';
@@ -52,6 +50,8 @@ if (isset($do_return_date)) {
 }
 
 ?>
+
+<div class="content">
 
 <h1>Select flight (2)</h1>
 
@@ -148,6 +148,8 @@ if ( isset($_POST['select_flight']) ) {
 // close connection
 $conn->close();
 ?>
+
+</div>
 
 </body>
 </html>

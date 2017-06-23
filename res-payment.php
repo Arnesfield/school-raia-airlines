@@ -17,14 +17,16 @@ if (!isset($_SESSION['reservation']['total_payment'])) {
 }
 ?>
 
-<?php echo '<pre>'; print_r($_SESSION); echo '</pre>'; ?>
-
 <?php
 // save choices
 if (isset($_POST['submit'])) {
   $valid = true;
 }
 ?>
+
+<div class="content">
+
+<h1>Reservation Payment</h1>
 
 <h2>Payment</h2>
 
@@ -115,6 +117,8 @@ if (isset($valid)) {
   header('location: ./');
 }
 ?>
+
+</div>
 
 </body>
 </html>

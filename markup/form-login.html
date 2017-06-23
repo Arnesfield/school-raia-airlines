@@ -1,19 +1,76 @@
-<form action="action/login.php" method="post">
+<div class="row -col-md-6 -h-vh">
 
-  <div>
-    <label for="username">Username</label>
-    <input type="text" id="username" name="username" />
+  <div class="bg-theme t-white my- flex -middle">
+    <div class="my- w-12 t-r p-3">
+      <div class="my- fs-3">
+        <h1>RAIA Airlines <i class="material-icons">airplanemode_active</i></h1>
+        <hr/>
+        <div>
+          <p class="my- fs">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non facilisis purus, at ultrices ante. Sed finibus eros id diam feugiat lacinia ut sit amet tortor.
+          </p>
+          <br/>
+          <p class="my- fs">
+             Mauris pellentesque arcu elit. Fusce vel nisl sit amet enim congue ornare. Nam auctor commodo orci ac eleifend.
+          </p>
+          <br/>
+          <p class="t-primary-light my- fs">
+            RAIA Airlines v0.5 &copy; 2017
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div>
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" />
+  <div class="quite-white my- center -middle">
+
+    <form method="post" action="action/login.php"
+      class="wide-card mdl-card enlarge my-w-11 my-p-y-3">
+      
+      <div class="mdl-card__title t-theme my-p-t my-m-b-3">
+        <i class="material-icons my-m-r-1">airplanemode_active</i>
+        <h1 class="mdl-card__title-text" style="font-size: 2em">
+          Login now to reserve!
+        </h1>
+      </div>
+      
+      <div class="mdl-card__supporting-text my- --w-11 -p-b">
+      
+        <div>
+          <i class="no- material-icons small t-theme">account_circle</i>&nbsp;&nbsp;
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label my-w-m">
+            <input class="mdl-textfield__input my-w-m" type="text" id="username" name="username"
+              maxlength="50"/>
+            <label class="mdl-textfield__label" for="username">Username</label>
+          </div>
+        </div>
+        
+        <div>
+          <i class="no- material-icons small t-theme">vpn_key</i>&nbsp;&nbsp;
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="password" id="password" name="password"
+              maxlength="50"/>
+            <label class="mdl-textfield__label" for="password">Password</label>
+          </div>
+        </div>
+      
+      </div>
+      
+      <div class="mdl-card__actions mdl-card--border my-p">
+        <div>
+          <a href="signup.php"
+            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+            Signup
+          </a>
+          <button type="submit" name="form_login"
+            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+            <i class="material-icons">send</i> Login
+          </button>
+        </div>
+      </div>
+      
+    </form>
+
   </div>
 
-  <div>
-    <button type="submit" name="form_login">Login</button>
-  </div>
-
-</form>
-
-<a href="signup.php">Signup</a>
+</div>

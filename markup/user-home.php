@@ -43,6 +43,8 @@ $record = get_record_from_query("
 
 ?>
 
+<div class="content">
+
 <h1>Welcome, <?=$username?>!</h1>
 
 <div>
@@ -169,3 +171,5 @@ if (isset($_POST['cancel'])) {
   header('location: ./');
 }
 ?>
+
+</div>

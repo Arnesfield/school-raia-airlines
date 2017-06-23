@@ -42,8 +42,11 @@ $query = "
 $record = $conn->query($query);
 ?>
 
-<h2>Select Hotel</h2>
+<div class="content">
 
+<h1>Hotel Selection</h1>
+
+<h2>Select Hotel</h2>
 
 <div>
 
@@ -106,6 +109,8 @@ if (isset($_POST['choose']) || isset($_POST['submit'])) {
   header('location: res-summary.php');
 }
 ?>
+
+</div>
 
 </body>
 </html>

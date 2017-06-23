@@ -59,6 +59,7 @@ else {
 }
 ?>
 
+<div class="content">
 
 <h2>Reservations</h2>
 
@@ -189,6 +190,8 @@ if (isset($_POST['toggle'])) {
   header('location: reports.php');
 }
 ?>
+
+</div>
 
 </body>
 </html>

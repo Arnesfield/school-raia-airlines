@@ -52,6 +52,8 @@ else {
 
 ?>
 
+<div class="content">
+
 <h2>Manage Flights</h2>
 
 <?php require_once('markup/form-search.php'); ?>
@@ -165,6 +167,8 @@ else {
   <?php } ?>
 
 </table>
+
+</div>
 
 </div>
 

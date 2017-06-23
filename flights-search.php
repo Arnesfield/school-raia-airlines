@@ -39,6 +39,8 @@ if (isset($_SESSION['reservation']) && !$_SESSION['is_admin']) {
 
 ?>
 
+<div class="content">
+
 <h1>Search Flights (1)</h1>
 
 <h2>Select where</h2>
@@ -218,6 +220,8 @@ if ( isset($_POST['search_flights']) ) {
   header('location: flights-select.php');
 }
 ?>
+
+</div>
 
 </body>
 </html>

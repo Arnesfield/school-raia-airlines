@@ -28,8 +28,6 @@ foreach ($_SESSION['reservation']['search_flights'] as $key => $value) {
 $total_passengers = $_SESSION['reservation']['search_flights']['total_passengers'];
 ?>
 
-<?php echo '<pre>'; print_r($_SESSION); echo '</pre>'; ?>
-
 <?php
 // generate seats
 $what_seat = 'departure_seats';
@@ -46,6 +44,9 @@ if (isset($_SESSION['reservation']['return_choice'])) {
 // generate seats instead
 ?>
 
+<div class="content">
+
+<h1>Seat Selection (3)</h1>
 
 <h2>Seats here</h2>
 
@@ -140,6 +141,8 @@ if ( isset($_POST['select_seats']) ) {
 // close connection
 $conn->close();
 ?>
+
+</div>
 
 </body>
 </html>

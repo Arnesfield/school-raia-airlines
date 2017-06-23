@@ -59,7 +59,6 @@ $main_q = "
 ";
 
 $query = $main_q . " AND s.id = {$departure_seats[0]}";
-echo $query;
 $record = $conn->query($query)->fetch_assoc();
 $dept_fid = $record['flight_id'];
 $dept_fcode = $record['flight_code'];
@@ -102,7 +101,9 @@ if (isset($_SESSION['reservation']['return_choice'])) {
 
 ?>
 
-<?php echo '<pre>'; print_r($_SESSION); echo '</pre>'; ?>
+<div class="content">
+
+<h1>Summary</h1>
 
 <h2>Reservation Summary</h2>
 
@@ -230,7 +231,6 @@ if (isset($_SESSION['reservation']['return_choice'])) {
           $total = 0;
           $hid = $_SESSION['reservation']['hotel_id'];
           if ($hid != '0') {
-            echo $hid;
             $rec = get_record_from_query("SELECT * FROM hotels WHERE id = $hid")->fetch_assoc();
             $total = $rec['price']*1;
             

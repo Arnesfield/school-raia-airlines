@@ -33,12 +33,6 @@ if (isset($_POST['passenger_info'])) {
       ${$temp} = $values[$i];
     }
     
-    /*foreach ($values as $key_val => $value) {
-      echo '<pre>';
-      print_r($_POST);
-      echo '</pre>';
-      ${$key . '-' . $key_val} = strip_tags($value);
-    }*/
   }
 }
 
@@ -60,7 +54,9 @@ else {
 
 ?>
 
-<?php echo '<pre>'; print_r($_SESSION); echo '</pre>'; ?>
+<div class="content">
+
+<h1>Passengers</h1>
 
 <h2>Enter passenger info</h2>
 
@@ -102,10 +98,6 @@ else {
 <?php
 // if post
 if (isset($_POST['passenger_info'])) {
-  echo '<pre>';
-  print_r($_POST);
-  echo '</pre>';
-
   // save to session if valid
   for ($i = 0; $i < $total_passengers; $i++) {
     $_SESSION['reservation']['passenger_info'][$i] = array(
@@ -121,6 +113,8 @@ if (isset($_POST['passenger_info'])) {
   header('location: hotels-select.php');
 }
 ?>
+
+</div>
 
 </body>
 </html>
